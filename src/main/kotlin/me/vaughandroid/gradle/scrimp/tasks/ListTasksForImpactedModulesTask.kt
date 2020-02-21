@@ -12,7 +12,7 @@ import java.nio.file.Path
 
 private const val ENABLE_DEBUG_LOGGING = true
 
-open class FilterTasksForImpactedModulesTask : DefaultTask() {
+open class ListTasksForImpactedModulesTask : DefaultTask() {
 
     @Input
     val tasksString = project.properties["scrimpTasks"]?.toString()

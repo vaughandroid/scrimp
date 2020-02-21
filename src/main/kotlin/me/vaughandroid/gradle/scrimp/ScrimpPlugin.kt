@@ -1,7 +1,7 @@
 package me.vaughandroid.gradle.scrimp
 
 import me.vaughandroid.gradle.scrimp.tasks.AnalyseImpactedModulesTask
-import me.vaughandroid.gradle.scrimp.tasks.FilterTasksForImpactedModulesTask
+import me.vaughandroid.gradle.scrimp.tasks.ListTasksForImpactedModulesTask
 import me.vaughandroid.gradle.scrimp.tasks.PrintModuleGraphTask
 import me.vaughandroid.gradle.scrimp.tasks.RunTasksForImpactedModulesTask
 import org.gradle.api.Plugin
@@ -24,10 +24,10 @@ class ScrimpPlugin : Plugin<Project> {
                 this.analysisDataFilePath = analysisDataFilePath
             }
 
-        val filterTasksForImpactedModulesTask =
+        val listTasksForImpactedModulesTask =
             project.tasks.create(
-                "scrimpFilter",
-                FilterTasksForImpactedModulesTask::class.java
+                "scrimpListTasks",
+                ListTasksForImpactedModulesTask::class.java
             ).apply {
                 dependsOn(analyseChangedModulesTask)
                 this.analysisDataFilePath = analysisDataFilePath
@@ -39,7 +39,7 @@ class ScrimpPlugin : Plugin<Project> {
             RunTasksForImpactedModulesTask::class.java
         )
             .apply {
-                dependsOn(filterTasksForImpactedModulesTask)
+                dependsOn(listTasksForImpactedModulesTask)
                 this.taskListFilePath = taskListFilePath
             }
 
