@@ -15,7 +15,8 @@ class ScrimpPlugin : Plugin<Project> {
         val analysisDataFilePath = Paths.get("${project.buildDir}/scrimp/module-analysis.json")
         val taskListFilePath = Paths.get("${project.buildDir}/scrimp/filtered-tasks.txt")
 
-        val printLogs = project.properties["scrimpPrintLogs"] == true
+        val printLogs = project.properties["scrimpPrintLogs"] == "true"
+        val logger = Logger(project, printLogs)
 
         val analyseChangedModulesTask =
             project.tasks.create(
@@ -23,7 +24,7 @@ class ScrimpPlugin : Plugin<Project> {
                 AnalyseImpactedModulesTask::class.java
             ).apply {
                 this.analysisDataFilePath = analysisDataFilePath
-                this.printLogs = printLogs
+                this.logger = logger
             }
 
         val listTasksForImpactedModulesTask =
@@ -34,7 +35,7 @@ class ScrimpPlugin : Plugin<Project> {
                 dependsOn(analyseChangedModulesTask)
                 this.analysisDataFilePath = analysisDataFilePath
                 this.taskListFilePath = taskListFilePath
-                this.printLogs = printLogs
+                this.logger = logger
             }
 
         project.tasks.create(
@@ -44,7 +45,7 @@ class ScrimpPlugin : Plugin<Project> {
             .apply {
                 dependsOn(listTasksForImpactedModulesTask)
                 this.taskListFilePath = taskListFilePath
-                this.printLogs = printLogs
+                this.logger = logger
             }
 
         project.tasks.create("scrimpPrintModuleGraph", PrintModuleGraphTask::class.java)

@@ -1,5 +1,6 @@
 # To do
 
+* Handle sub-projects of sub-projects, recursively. 
 * Test for & properly document 'circular references' edge case.
 * Clean up logging.
 * Publish/tag v0.1 on GitHub.

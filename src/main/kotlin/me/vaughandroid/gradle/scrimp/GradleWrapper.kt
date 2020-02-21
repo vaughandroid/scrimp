@@ -14,18 +14,16 @@ class GradleWrapper(project: Project) : ModuleNameProvider,
     private val rootProject = project.rootProject
 
     override val rootProjectName: String
-        get() = rootProject.name
+        get() = rootProject.path
 
     override val moduleNames: Set<String>
-        get() {
-            return rootProject.allprojects.map { it.name }.toSet()
-        }
+        get() = rootProject.allprojects.map { it.path }.toSet()
 
     override fun getOutgoingDependenciesForProject(projectName: String): Set<String> {
         val project = getProjectByName(projectName)
         return project.configurations
             .flatMap { it.dependencies.withType(ProjectDependency::class.java) }
-            .map { it.dependencyProject.name }
+            .map { it.dependencyProject.path }
             .toSet()
     }
 
@@ -33,6 +31,6 @@ class GradleWrapper(project: Project) : ModuleNameProvider,
         getProjectByName(projectName).projectDir.toPath()
 
     private fun getProjectByName(projectName: String): Project =
-        rootProject.allprojects.first { it.name == projectName }
+        rootProject.allprojects.first { it.path == projectName }
 
 }

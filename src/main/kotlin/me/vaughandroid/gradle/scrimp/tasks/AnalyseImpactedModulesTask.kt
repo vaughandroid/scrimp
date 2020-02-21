@@ -28,9 +28,7 @@ open class AnalyseImpactedModulesTask : DefaultTask() {
     @OutputFile
     lateinit var analysisDataFilePath: Path
 
-    var printLogs = false
-
-    private val logger = Logger(project, printLogs)
+    lateinit var logger: Logger
 
     @TaskAction
     fun action() {
