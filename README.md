@@ -32,9 +32,7 @@ buildscript {
     }
 }
 
-plugins {
-    id 'scrimp'
-}
+apply plugin: 'scrimp'
 ```
 
 ### Run tests on impacted modules
@@ -83,3 +81,9 @@ This will output a file at `<build dir>/scrimp/filtered-tasks.txt`.
 `./gradlew scrimpAnalyse -PscrimpCommit=<commit ref>`
 
 This will output a file at `<build dir>/scrimp/module-analysis.json`.
+
+### Print module graph
+
+`./gradlew scrimpPrintModuleGraph`
+
+This will print a view of the module graph to the console. 
