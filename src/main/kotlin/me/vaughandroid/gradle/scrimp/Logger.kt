@@ -1,20 +1,21 @@
 package me.vaughandroid.gradle.scrimp
 
+import me.vaughandroid.gradle.scrimp.core.LogReceiver
 import org.gradle.api.Project
 
 class Logger(
     private val project: Project,
     private val printLogs: Boolean = true
-) {
+) : LogReceiver {
 
-    fun log(message: String) {
+    override fun log(message: String) {
         project.logger.debug(message)
         if (printLogs) {
             println(message)
         }
     }
 
-    fun logList(items: Collection<Any>, title: String) {
+    override fun logList(items: Collection<Any>, title: String) {
         if (printLogs) {
             if (items.isEmpty()) {
                 log("$title none!")

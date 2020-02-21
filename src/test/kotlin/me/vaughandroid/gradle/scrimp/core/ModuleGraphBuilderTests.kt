@@ -21,7 +21,7 @@ class ModuleGraphBuilderTests {
         }
 
         // When
-        val moduleGraph = ModuleGraphBuilder.build(moduleNameProvider, outgoingDependencyProvider)
+        val moduleGraph = ModuleGraphBuilder().build(moduleNameProvider, outgoingDependencyProvider)
 
         // Then
         assertThat(moduleGraph.rootProjectName).isEqualTo("rootProject")
@@ -46,7 +46,7 @@ class ModuleGraphBuilderTests {
         }
 
         // When
-        val moduleGraph = ModuleGraphBuilder.build(moduleNameProvider, outgoingDependencyProvider)
+        val moduleGraph = ModuleGraphBuilder().build(moduleNameProvider, outgoingDependencyProvider)
 
         // Then
         assertThat(moduleGraph.getOutgoingDependencies("rootProject"))
@@ -69,7 +69,7 @@ class ModuleGraphBuilderTests {
         }
 
         // When
-        val moduleGraph = ModuleGraphBuilder.build(moduleNameProvider, outgoingDependencyProvider)
+        val moduleGraph = ModuleGraphBuilder().build(moduleNameProvider, outgoingDependencyProvider)
 
         // Then
         assertThat(moduleGraph.rootModules)
@@ -102,7 +102,7 @@ class ModuleGraphBuilderTests {
         }
 
         // When
-        val moduleGraph = ModuleGraphBuilder.build(moduleNameProvider, outgoingDependencyProvider)
+        val moduleGraph = ModuleGraphBuilder().build(moduleNameProvider, outgoingDependencyProvider)
 
         // Then
         assertThat(moduleGraph.rootModules).containsExactly("rootProject", "rootModule")

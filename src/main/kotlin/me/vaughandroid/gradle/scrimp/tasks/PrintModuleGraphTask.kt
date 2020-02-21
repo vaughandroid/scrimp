@@ -15,7 +15,7 @@ open class PrintModuleGraphTask : DefaultTask() {
     fun action() {
         val gradleWrapper = GradleWrapper(project)
 
-        val moduleGraph = ModuleGraphBuilder.build(gradleWrapper, gradleWrapper)
+        val moduleGraph = ModuleGraphBuilder(logger).build(gradleWrapper, gradleWrapper)
         val treeString = ModuleGraphAsTreeSerializer.asTreeString(moduleGraph)
 
         logger.log("Modules:")

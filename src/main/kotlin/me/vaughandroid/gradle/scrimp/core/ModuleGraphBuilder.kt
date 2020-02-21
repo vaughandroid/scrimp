@@ -1,6 +1,8 @@
 package me.vaughandroid.gradle.scrimp.core
 
-object ModuleGraphBuilder {
+class ModuleGraphBuilder(
+    private val logReceiver: LogReceiver? = null
+) {
 
     fun build(
         moduleNameProvider: ModuleNameProvider,
@@ -19,7 +21,13 @@ object ModuleGraphBuilder {
         outgoingDependencyProvider: OutgoingDependencyProvider
     ) {
         addModule(moduleName)
-        outgoingDependencyProvider.getOutgoingDependenciesForProject(moduleName)
+
+        val outgoingDependencies =
+            outgoingDependencyProvider.getOutgoingDependenciesForProject(moduleName)
+
+        logReceiver?.logList(outgoingDependencies, "Add module $moduleName with dependencies:")
+
+        outgoingDependencies
             .forEach { dependencyModuleName ->
                 addDependency(moduleName, dependencyModuleName)
                 addModuleAndDependencies(dependencyModuleName, outgoingDependencyProvider)

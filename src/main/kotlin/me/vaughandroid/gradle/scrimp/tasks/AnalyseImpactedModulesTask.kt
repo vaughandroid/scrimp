@@ -36,7 +36,7 @@ open class AnalyseImpactedModulesTask : DefaultTask() {
     fun action() {
         val gradleWrapper = GradleWrapper(project)
         val changedFilesProvider = GitChangedFilesProvider(project)
-        val moduleGraph = ModuleGraphBuilder.build(gradleWrapper, gradleWrapper)
+        val moduleGraph = ModuleGraphBuilder(logger).build(gradleWrapper, gradleWrapper)
         val changedModuleProvider = ChangedModuleProvider(gradleWrapper, moduleGraph)
         val impactedModuleProvider = ImpactedModuleProvider(moduleGraph)
 
