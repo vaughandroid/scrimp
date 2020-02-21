@@ -1,4 +1,4 @@
-# SCRIMP (Source ContRol Impacted Modules Plugin)
+# Scrimp (Source ContRol Impacted Modules Plugin)
 
 ## About
 
@@ -6,61 +6,80 @@
   *verb*
   be thrifty or parsimonious; economize.
 
-A Gradle plugin designed to minimize the amount of work your CI has to do.
+Scrimp is a Gradle plugin designed to minimize the amount of tests you have to run - locally, or on CI.
 
-The plugin analyses which modules have been affected by changes in source control, and lets you run a set of tasks on just those modules.
+The plugin analyses which modules have been impacted by changes in source control, and lets you run tests (or any tasks you like) on just those modules.
 
 ### Why is this needed?
 
-Gradle's caching mechanism is great, but it isn't much use in a CI environment where every build is a 'clean' build.
- 
-### How does it work?
+Gradle's caching mechanism is great, but it isn't 100% reliable. It also isn't much use in a CI environment where builds are done from scratch.
 
-Given a commit reference for the last successful build and a list of tasks to run, the plugin can:
+For large projects, running all the tests can take a long time.
 
-1. Establish which files have changed.
-2. Figure out which modules those files belong to.
-3. Figure out which modules depend on *those* modules.
-4. Produce a filtered set of tasks by checking which of the list of tasks applies to each module.
-5. Run the final set of tasks.
+## Usage
 
-## Applying the plugin
+### Apply the plugin
 
-In your project's build.gradle:
+In your top-level build.gradle:
 
 ```groovy
+buildscript {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+    dependencies {
+        classpath 'com.github.vaughandroid:scrimp:master-SNAPSHOT'
+    }
+}
+
 plugins {
     id 'scrimp'
 }
 ```
 
-## Usage
-
-Typically you want to run a set of tasks on any impacted modules, which you can do as follows:
+### Run tests on impacted modules
 
 `./gradlew scrimpRun -PscrimpTasks="<task list>" -PscrimpCommit=<commit ref>`
 
-The 'scrimpTasks parameter' is required, and should be a list of one or more task names separated by spaces.
+* The 'scrimpTasks parameter' is required, and should be a list of one or more task names separated by spaces. You can safely include the names of tasks which only exist for some modules.
+* The 'scrimpCommit' parameter is optional, and will default to HEAD (i.e. changes since the last commit).
 
-Tasks are applied to all impacted modules, as long as they exist for that module. E.g. If you have a mix of Android and non-Android modules, you can safely include "connectedCheck" in the list.
+Example 1: Run tests on uncommitted changes:
 
-The 'scrimpCommit' parameter is optional, and will default to HEAD (i.e. changes since the last commit).
+`./gradlew scrimpRun -PscrimpTasks=test`
 
-E.g.
+Example 2: Run tests and connected tests covering changes since commit `3b7e70c`:
 
-``./gradlew scrimpRun -PscrimpTasks="test connectedCheck" -PscrimpCommit=HEAD~7``
+`./gradlew scrimpRun -PscrimpTasks="test connectedCheck" -PscrimpCommit=3b7e70c`
 
-### Other operations
+## How does it work?
 
+Given a commit reference and a list of tasks to run for each module, the plugin will:
 
-#### Analyse changed and impacted modules 
+1. Establish which files have changed.
+2. Work out out which modules those files belong to.
+3. Work out which modules depend on *those* modules (and so on...).
+4. Produce a set of tasks to be run.
+5. Run the final set of tasks.
+
+## Tips
+
+### Test all changes on a branch
+
+You can use `git merge-base HEAD <branch>` to find the most recent common ancestor of this branch and another branch.
+
+So, to run tests for all changes since branching from 'master' you can do:
+
+`./gradlew scrimpRun -PscrimpTasks="test" -PscrimpCommit=$(git merge-base HEAD master)`
+
+### List tasks (but do not run them)
+
+`./gradlew scrimpListTasks -PscrimpTasks="<task list>" -PscrimpCommit=<commit ref>`
+
+This will output a file at `<build dir>/scrimp/filtered-tasks.txt`.
+
+### Analyse changed and impacted modules 
 
 `./gradlew scrimpAnalyse -PscrimpCommit=<commit ref>`
 
-This task will output a file at `<build dir>/scrimp/module-analysis.json`.
-
-#### Prepare a list of tasks to run only on impacted modules
-
-`./gradlew scrimpFilter -PscrimpTasks="<task list>" -PscrimpCommit=<commit ref>`
-
-This task will output a file at `<build dir>/scrimp/filtered-tasks.txt`.
+This will output a file at `<build dir>/scrimp/module-analysis.json`.
