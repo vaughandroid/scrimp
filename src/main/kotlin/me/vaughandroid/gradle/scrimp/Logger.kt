@@ -1,19 +1,21 @@
 package me.vaughandroid.gradle.scrimp
 
+import org.gradle.api.Project
+
 class Logger(
-    private val enabled: Boolean = true
+    private val project: Project,
+    private val printLogs: Boolean = true
 ) {
 
     fun log(message: String) {
-        @Suppress("ConstantConditionIf")
-        if (enabled) {
+        project.logger.debug(message)
+        if (printLogs) {
             println(message)
         }
     }
 
     fun logList(items: Collection<Any>, title: String) {
-        @Suppress("ConstantConditionIf")
-        if (enabled) {
+        if (printLogs) {
             if (items.isEmpty()) {
                 log("$title none!")
             } else {

@@ -15,8 +15,6 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import java.nio.file.Path
 
-private const val ENABLE_DEBUG_LOGGING = true
-
 open class AnalyseImpactedModulesTask : DefaultTask() {
 
     init {
@@ -30,7 +28,9 @@ open class AnalyseImpactedModulesTask : DefaultTask() {
     @OutputFile
     lateinit var analysisDataFilePath: Path
 
-    private val logger = Logger(ENABLE_DEBUG_LOGGING)
+    var printLogs = false
+
+    private val logger = Logger(project, printLogs)
 
     @TaskAction
     fun action() {
