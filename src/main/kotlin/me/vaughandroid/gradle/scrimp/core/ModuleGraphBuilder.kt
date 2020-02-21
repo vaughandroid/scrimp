@@ -20,6 +20,10 @@ class ModuleGraphBuilder(
         moduleName: String,
         outgoingDependencyProvider: OutgoingDependencyProvider
     ) {
+        // Since we collapse all the configurations, it is possible to get circular references
+        // for some edge cases.
+        if (allModules.contains(moduleName)) return
+
         addModule(moduleName)
 
         val outgoingDependencies =
