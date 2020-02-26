@@ -1,7 +1,8 @@
 # To do
 
+## Future
+
 * Clean up logging.
-* Publish/tag v0.1 on GitHub.
 * Make it possible to pass flags.
 * Handle case where there are no changes.
 * README updates:
