@@ -112,5 +112,45 @@ class ModuleGraphBuilderTests {
             .containsExactly("dependencyB", "dependencyC")
     }
 
+    /**
+     *  Since modules can contain different configurations, it is possible to have circular
+     *  references between modules.
+     *  E.g. Module A (test configuration) -> Module B -> Module A (main configuration)
+     */
+    @Test
+    fun `circular module dependencies are supported`() {
+        // Given
+        val moduleNameProvider = object : ModuleNameProvider {
+            override val rootProjectName: String
+                get() = "rootProject"
+
+            override val moduleNames: Set<String>
+                get() = setOf(
+                    "rootProject",
+                    "moduleA",
+                    "moduleB"
+                )
+        }
+        val outgoingDependencyProvider = object : OutgoingDependencyProvider {
+            override fun getOutgoingDependenciesForProject(projectName: String): Set<String> =
+                when (projectName) {
+                    "rootProject" -> setOf("moduleA")
+                    "moduleA" -> setOf("moduleB")
+                    "moduleB" -> setOf("moduleA")
+                    else -> emptySet()
+                }
+        }
+
+        // When
+        val moduleGraph = ModuleGraphBuilder().build(moduleNameProvider, outgoingDependencyProvider)
+
+        // Then
+        assertThat(moduleGraph.getOutgoingDependencies("rootProject"))
+            .containsExactly("moduleA")
+        assertThat(moduleGraph.getOutgoingDependencies("moduleA"))
+            .containsExactly("moduleB")
+        assertThat(moduleGraph.getOutgoingDependencies("moduleB"))
+            .containsExactly("moduleA")
+    }
 }
 
