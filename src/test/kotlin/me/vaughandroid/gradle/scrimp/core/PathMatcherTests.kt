@@ -123,4 +123,17 @@ class PathMatcherTests {
         assertThat(actualPath).isNull()
     }
 
+    @Test
+    fun `absolute paths are supported`() {
+        // Given
+        val searchPath = Paths.get("/a/b/c")
+        val pathMatcher = PathMatcher("/a/b/c")
+
+        // When
+        val actualPath = pathMatcher.findClosestParent(searchPath)
+
+        // Then
+        assertThat(actualPath).isEqualTo(searchPath)
+    }
+
 }

@@ -18,7 +18,7 @@ class PathMatcher(
     fun findClosestParent(path: Path): Path? =
         folderPaths
             .filter { folderPath ->
-                folderPath == path.subpath(0, minOf(folderPath.nameCount, path.nameCount))
+                path.startsWith(folderPath)
             }
             .maxBy { it.nameCount }
 
