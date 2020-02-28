@@ -1,5 +1,10 @@
 # To do
 
+## v0.1.1
+
+* Output file change analysis.
+* Fix StackOverFlow when printing graph with circular reference.
+
 ## Future
 
 * Clean up logging.
