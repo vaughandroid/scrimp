@@ -46,6 +46,10 @@ Given a commit reference, Scrimp can:
 
 If given a set of tasks to be run for each module, Scrimp can run the tasks on affected modules.
 
+### Example
+
+![Diagram showing an example project and which modules need to be re-tested when changes are made](doc/project_dependencies.png)
+
 
 ## Usage
 
