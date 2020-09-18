@@ -12,6 +12,7 @@ The plugin analyses which modules have been impacted by changes in source contro
 
 It is particularly suited for multi-module Android projects, which use instrumented tests.
 
+
 ## Why is this needed?
 
 ### The general case
@@ -32,6 +33,19 @@ If you are developing for Android, instrumented tests are particularly problemat
 * They can be flaky.
 
 For these reasons, running instrumented tests locally can lead to a lot of wasted developer time, and running them in CI environments can get expensive quickly.
+
+
+## How it works
+
+### Overview
+
+Given a commit reference, Scrimp can:
+
+1. Establish which files have changed since the given commit, and which modules those files belong to.
+2. Work out which modules depend on *those* modules (and so on...).
+
+If given a set of tasks to be run for each module, Scrimp can run the tasks on affected modules.
+
 
 ## Usage
 
@@ -54,6 +68,8 @@ apply plugin: 'scrimp'
 
 ### Run tests on impacted modules
 
+This is the most straightforward "out of the box" way to use Scrimp. It will attempt to run all the given tasks on any modules which have changed or which have been impacted by changes to their dependencies.
+
 `./gradlew scrimpRun -PscrimpTasks="<task list>" -PscrimpCommit=<commit ref>`
 
 * The 'scrimpTasks parameter' is required, and should be a list of one or more task names separated by spaces. You can safely include the names of tasks which only exist for some modules.
@@ -67,25 +83,32 @@ Example 2: Run tests and connected tests covering changes since commit `3b7e70c`
 
 `./gradlew scrimpRun -PscrimpTasks="test connectedCheck" -PscrimpCommit=3b7e70c`
 
-## How does it work?
+### Analyse changed and impacted modules
 
-Given a commit reference and a list of tasks to run for each module, the plugin will:
+If you need to apply some customisation - e.g. running different tasks for different modules - then Scrimp can produce a report of changed and impacted modules.
 
-1. Establish which files have changed.
-2. Work out out which modules those files belong to.
-3. Work out which modules depend on *those* modules (and so on...).
-4. Produce a set of tasks to be run.
-5. Run the final set of tasks.
+`./gradlew scrimpAnalyse -PscrimpCommit=<commit ref>`
 
-## Tips
+This will output a file at `<build dir>/scrimp/module-analysis.json`.
 
-### Test all changes on a branch
+* The 'scrimpCommit' parameter is optional, and will default to HEAD (i.e. changes since the last commit).
 
-You can use `git merge-base HEAD <branch>` to find the most recent common ancestor of this branch and another branch.
+Example: Analyse changes since commit `3b7e70c`:
 
-So, to run tests for all changes since branching from 'master' you can do:
+`./gradlew scrimpAnalyse -PscrimpCommit=3b7e70c`
 
-`./gradlew scrimpRun -PscrimpTasks="test" -PscrimpCommit=$(git merge-base HEAD master)`
+### Getting a commit reference
+
+This is outside the scope of the plugin, and you may wish to use different strategies in different circumstances.
+
+When developing locally, you may wish to validate changes before each commit. In this case, you can not specify a commit and Scrimp will use `HEAD` by default.
+
+For CI, the recommended strategy is to have a "known good" branch, which is updated by your CI when tests pass successfully on your main branch. You can then use `git merge-base HEAD <branch>` to find the most recent common ancestor of this branch and another branch. For example, if your "known good" branch is called "green" your CI might run:
+
+`./gradlew scrimpRun -PscrimpTasks="test" -PscrimpCommit=$(git merge-base HEAD green)`
+
+
+## Other tasks
 
 ### List tasks (but do not run them)
 
@@ -93,14 +116,8 @@ So, to run tests for all changes since branching from 'master' you can do:
 
 This will output a file at `<build dir>/scrimp/filtered-tasks.txt`.
 
-### Analyse changed and impacted modules 
-
-`./gradlew scrimpAnalyse -PscrimpCommit=<commit ref>`
-
-This will output a file at `<build dir>/scrimp/module-analysis.json`.
-
 ### Print module graph
 
 `./gradlew scrimpPrintModuleGraph`
 
-This will print a view of the module graph to the console. 
+This will print a view of the module graph to the console.
