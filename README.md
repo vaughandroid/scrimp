@@ -1,4 +1,4 @@
-# Scrimp (Source ContRol Impacted Modules Plugin)
+# Scrimp
 
 ## About
 
@@ -6,15 +6,32 @@
   *verb*
   be thrifty or parsimonious; economize.
 
-Scrimp is a Gradle plugin designed to minimize the amount of tests you have to run - locally, or on CI.
+Scrimp is a Gradle plugin designed to only run tests when your code actually changes.
 
 The plugin analyses which modules have been impacted by changes in source control, and lets you run tests (or any tasks you like) on just those modules.
 
-### Why is this needed?
+It is particularly suited for multi-module Android projects, which use instrumented tests.
 
-Gradle's caching mechanism is great, but it isn't 100% reliable. It also isn't much use in a CI environment where builds are done from scratch.
+## Why is this needed?
 
-For large projects, running all the tests can take a long time.
+### The general case
+
+Projects of all sizes can benefit from reduced cycle times. For many development and CI workflows, the slowest part of the process is running tests.
+
+Gradle has [up-to-date checks](https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:up_to_date_checks) and the [Build Cache](https://docs.gradle.org/current/userguide/build_cache.html), both of which are designed to avoid repetition of work, by caching task outputs which can be reused when the task inputs have not changed. These are both great tools, but they both have a number of limitations:
+
+1. CI systems typically use "clean" builds, so tasks are never considered up-to-date.
+2. You may not be able to use the Build Cache, for technical or organisational reasons.
+
+### On Android
+
+If you are developing for Android, instrumented tests are particularly problematic.
+
+* They are [not cacheable](https://issuetracker.google.com/issues/115873051) by Gradle.
+* They are slow.
+* They can be flaky.
+
+For these reasons, running instrumented tests locally can lead to a lot of wasted developer time, and running them in CI environments can get expensive quickly.
 
 ## Usage
 
