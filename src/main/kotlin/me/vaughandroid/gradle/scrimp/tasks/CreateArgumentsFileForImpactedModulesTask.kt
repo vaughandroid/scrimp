@@ -18,7 +18,7 @@ open class CreateArgumentsFileForImpactedModulesTask : DefaultTask() {
     lateinit var taskListFilePath: Path
 
     @Input
-    val argumentsString = project.properties["scrimpExtraArgs"]?.toString()
+    val argumentsString: String = project.properties["scrimpExtraArgs"]?.toString() ?: ""
 
     @OutputFile
     lateinit var argumentsFilePath: Path
@@ -32,12 +32,16 @@ open class CreateArgumentsFileForImpactedModulesTask : DefaultTask() {
 
         logger.log("Input arguments: $argumentsString")
 
+        logger.log("Building arguments output")
+        val buffer = StringBuffer()
+        tasksToInvoke.joinTo(buffer, separator = " ")
+        if (argumentsString.isNotEmpty()) {
+            buffer.append(" ").append(argumentsString)
+        }
+        val output = buffer.toString()
+
         logger.log("Writing arguments file: $argumentsFilePath")
-        val taskListText = tasksToInvoke.joinTo(StringBuffer(), separator = " ")
-            .append(" ")
-            .append(argumentsString)
-            .toString()
-        argumentsFilePath.toFile().writeText(taskListText)
+        argumentsFilePath.toFile().writeText(output)
     }
 
 }

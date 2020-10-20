@@ -18,7 +18,7 @@ open class RunTasksForImpactedModulesTask : DefaultTask() {
     lateinit var taskListFilePath: Path
 
     @Input
-    val argumentsString = project.properties["scrimpExtraArgs"]?.toString()
+    val argumentsString: String = project.properties["scrimpExtraArgs"]?.toString() ?: ""
 
     lateinit var logger: Logger
 
