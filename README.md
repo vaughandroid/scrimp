@@ -117,7 +117,7 @@ For CI, the recommended strategy is to have a "known good" branch, which is upda
 
 ### Output file with Gradle arguments
 
-`./gradlew scrimpListTasks -PscrimpTasks="<task list> -PscrimpExtraArgs="<extra Gradle arguments>" -PscrimpCommit=<commit ref>`
+`./gradlew scrimpListTasks -scrimpCreateArgumentsFile="<task list> -PscrimpExtraArgs="<extra Gradle arguments>" -PscrimpCommit=<commit ref>`
 
 ### List tasks (but do not run them)
 
