@@ -1,9 +1,6 @@
 package me.vaughandroid.gradle.scrimp
 
-import me.vaughandroid.gradle.scrimp.tasks.AnalyseImpactedModulesTask
-import me.vaughandroid.gradle.scrimp.tasks.ListTasksForImpactedModulesTask
-import me.vaughandroid.gradle.scrimp.tasks.PrintModuleGraphTask
-import me.vaughandroid.gradle.scrimp.tasks.RunTasksForImpactedModulesTask
+import me.vaughandroid.gradle.scrimp.tasks.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.nio.file.Paths
@@ -14,6 +11,7 @@ class ScrimpPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val analysisDataFilePath = Paths.get("${project.buildDir}/scrimp/module-analysis.json")
         val taskListFilePath = Paths.get("${project.buildDir}/scrimp/filtered-tasks.txt")
+        val argumentsFilePath = Paths.get("${project.buildDir}/scrimp/filtered-arguments.txt")
 
         val printLogs = project.properties["scrimpPrintLogs"] == "true"
         val logger = Logger(project, printLogs)
@@ -39,14 +37,23 @@ class ScrimpPlugin : Plugin<Project> {
             }
 
         project.tasks.create(
+            "scrimpCreateArgumentsFile",
+            CreateArgumentsFileForImpactedModulesTask::class.java
+        ).apply {
+            dependsOn(listTasksForImpactedModulesTask)
+            this.taskListFilePath = taskListFilePath
+            this.argumentsFilePath = argumentsFilePath
+            this.logger = logger
+        }
+
+        project.tasks.create(
             "scrimpRun",
             RunTasksForImpactedModulesTask::class.java
-        )
-            .apply {
-                dependsOn(listTasksForImpactedModulesTask)
-                this.taskListFilePath = taskListFilePath
-                this.logger = logger
-            }
+        ).apply {
+            dependsOn(listTasksForImpactedModulesTask)
+            this.taskListFilePath = taskListFilePath
+            this.logger = logger
+        }
 
         project.tasks.create("scrimpPrintModuleGraph", PrintModuleGraphTask::class.java)
     }

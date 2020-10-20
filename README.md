@@ -74,10 +74,11 @@ apply plugin: 'scrimp'
 
 This is the most straightforward "out of the box" way to use Scrimp. It will attempt to run all the given tasks on any modules which have changed or which have been impacted by changes to their dependencies.
 
-`./gradlew scrimpRun -PscrimpTasks="<task list>" -PscrimpCommit=<commit ref>`
+`./gradlew scrimpRun -PscrimpTasks="<task list>" -PscrimpExtraArgs="<extra Gradle arguments>" -PscrimpCommit=<commit ref>`
 
 * The 'scrimpTasks parameter' is required, and should be a list of one or more task names separated by spaces. You can safely include the names of tasks which only exist for some modules.
 * The 'scrimpCommit' parameter is optional, and will default to HEAD (i.e. changes since the last commit).
+* The 'scrimpExtraArgs' parameter is optional, but can be a list of one or more additional Gradle parameters to use when running the tasks. e.g. "--parallel".
 
 Example 1: Run tests on uncommitted changes:
 
@@ -109,10 +110,14 @@ When developing locally, you may wish to validate changes before each commit. In
 
 For CI, the recommended strategy is to have a "known good" branch, which is updated by your CI when tests pass successfully on your main branch. You can then use `git merge-base HEAD <branch>` to find the most recent common ancestor of this branch and another branch. For example, if your "known good" branch is called "green" your CI might run:
 
-`./gradlew scrimpRun -PscrimpTasks="test" -PscrimpCommit=$(git merge-base HEAD green)`
+`./gradlew scrimpRun -PscrimpTasks="test" -PscrimpExtraArgs="--parallel" -PscrimpCommit=$(git merge-base HEAD green)`
 
 
 ## Other tasks
+
+### Output file with Gradle arguments
+
+`./gradlew scrimpListTasks -PscrimpTasks="<task list> -PscrimpExtraArgs="<extra Gradle arguments>" -PscrimpCommit=<commit ref>`
 
 ### List tasks (but do not run them)
 
