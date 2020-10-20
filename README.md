@@ -119,6 +119,10 @@ For CI, the recommended strategy is to have a "known good" branch, which is upda
 
 `./gradlew scrimpListTasks -scrimpCreateArgumentsFile="<task list> -PscrimpExtraArgs="<extra Gradle arguments>" -PscrimpCommit=<commit ref>`
 
+This will output a file at `<build dir>/scrimp/filtered-arguments.txt`.
+
+You can run this and then run `./gradlew $(cat build/scrimp/filtered-arguments.txt)` to separate the steps of filtering tasks and running them.
+
 ### List tasks (but do not run them)
 
 `./gradlew scrimpListTasks -PscrimpTasks="<task list>" -PscrimpCommit=<commit ref>`
