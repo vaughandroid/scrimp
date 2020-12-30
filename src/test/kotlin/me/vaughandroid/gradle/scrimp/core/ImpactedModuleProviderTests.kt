@@ -17,12 +17,28 @@ class ImpactedModuleProviderTests {
      */
     private val moduleGraph = ModuleGraph("rootProject").apply {
         addModule("moduleA")
+        addDependency("moduleA", "moduleF")
         addModule("moduleB")
         addDependency("moduleB", "moduleC")
         addDependency("moduleB", "moduleD")
         addDependency("moduleD", "moduleE")
         addDependency("moduleD", "moduleF")
-        addDependency("moduleA", "moduleF")
+    }
+
+    /*
+    rootProject
+    moduleA
+      - moduleB
+    moduleB
+      - moduleA
+      - moduleC
+     */
+    private val moduleGraphWithCyclicDependency = ModuleGraph("rootProject").apply {
+        addModule("moduleA")
+        addDependency("moduleA", "moduleB")
+        addModule("moduleB")
+        addDependency("moduleB", "moduleA")
+        addDependency("moduleB", "moduleC")
     }
 
     @Test
@@ -108,6 +124,21 @@ class ImpactedModuleProviderTests {
             "moduleB",
             "moduleD",
             "moduleF"
+        )
+    }
+
+    @Test
+    fun `a change to a module which is part of a cyclic dependency returns all which are part of the cycle`() {
+        // Given
+        val impactedModuleProvider = ImpactedModuleProvider(moduleGraphWithCyclicDependency)
+
+        // When
+        val impactedModules = impactedModuleProvider.getModulesImpactedByChanges("moduleA")
+
+        // Then
+        assertThat(impactedModules).containsExactly(
+            "moduleA",
+            "moduleB"
         )
     }
 }

@@ -11,13 +11,15 @@ class ImpactedModuleProvider(
         if (changedModules.contains(moduleGraph.rootProjectName)) {
             moduleGraph.allModules
         } else {
-            changedModules
-                // Get incoming dependencies.
-                .flatMap { moduleGraph.getIncomingDependencies(it) }
-                // Recursively get their dependencies.
-                .flatMap { getModulesImpactedByChanges(it) }
-                .plus(changedModules)
-                .toSet()
+            val nextGeneration = changedModules
+                    .flatMap { moduleGraph.getIncomingDependencies(it) }
+                    .plus(changedModules)
+                    .toSet()
+            if (nextGeneration.size > changedModules.size) {
+                getModulesImpactedByChanges(nextGeneration)
+            } else {
+                changedModules
+            }
         }
 
 }

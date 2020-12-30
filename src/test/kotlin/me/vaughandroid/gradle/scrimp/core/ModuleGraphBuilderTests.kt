@@ -118,7 +118,7 @@ class ModuleGraphBuilderTests {
      *  E.g. Module A (test configuration) -> Module B -> Module A (main configuration)
      */
     @Test
-    fun `circular module dependencies are supported`() {
+    fun `cyclic module dependencies are supported`() {
         // Given
         val moduleNameProvider = object : ModuleNameProvider {
             override val rootProjectName: String
