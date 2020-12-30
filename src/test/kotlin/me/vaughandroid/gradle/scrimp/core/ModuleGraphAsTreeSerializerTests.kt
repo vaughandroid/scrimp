@@ -127,5 +127,33 @@ class ModuleGraphAsTreeSerializerTests {
         assertThat(asString).isEqualTo(expectedString)
     }
 
+    @Test
+    fun `printing of cyclic dependencies stops once the cycle has been printed once`() {
+        // Given
+        val moduleGraph = ModuleGraph("root").apply {
+            addDependency("root", "submoduleA")
+            addDependency("root", "submoduleB")
+            addDependency("submoduleA", "submoduleB")
+            addDependency("submoduleB", "submoduleC")
+            addDependency("submoduleC", "submoduleA")
+        }
+
+        // When
+        val asString = ModuleGraphAsTreeSerializer.asTreeString(moduleGraph)
+
+        // Then
+        val expectedString =
+            """root
+                |  - submoduleA
+                |      - submoduleB
+                |          - submoduleC
+                |              - submoduleA (*)
+                |  - submoduleB
+                |      - submoduleC
+                |          - submoduleA
+                |              - submoduleB (*)
+            """.trimMargin()
+        assertThat(asString).isEqualTo(expectedString)
+    }
 }
 
