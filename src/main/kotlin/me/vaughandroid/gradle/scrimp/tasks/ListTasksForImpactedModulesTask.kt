@@ -4,10 +4,7 @@ import me.vaughandroid.gradle.scrimp.Logger
 import me.vaughandroid.gradle.scrimp.data.AnalysisStore
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*
 import java.nio.file.Path
 
 open class ListTasksForImpactedModulesTask : DefaultTask() {
@@ -21,6 +18,7 @@ open class ListTasksForImpactedModulesTask : DefaultTask() {
     @OutputFile
     lateinit var taskListFilePath: Path
 
+    @Internal
     lateinit var logger: Logger
 
     @TaskAction

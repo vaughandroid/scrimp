@@ -4,6 +4,7 @@ import me.vaughandroid.gradle.scrimp.Logger
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import org.gradle.tooling.GradleConnector
 import org.gradle.util.internal.ArgumentsSplitter
@@ -21,6 +22,7 @@ open class RunTasksForImpactedModulesTask : DefaultTask() {
     @Input
     val argumentsString: String = project.properties["scrimpExtraArgs"]?.toString() ?: ""
 
+    @Internal
     lateinit var logger: Logger
 
     @TaskAction

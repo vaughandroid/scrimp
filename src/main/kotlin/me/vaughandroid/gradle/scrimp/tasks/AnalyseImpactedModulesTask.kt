@@ -11,6 +11,7 @@ import me.vaughandroid.gradle.scrimp.data.AnalysisStore
 import me.vaughandroid.gradle.scrimp.scm.GitChangedFilesProvider
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import java.nio.file.Path
@@ -28,6 +29,7 @@ open class AnalyseImpactedModulesTask : DefaultTask() {
     @OutputFile
     lateinit var analysisDataFilePath: Path
 
+    @Internal
     lateinit var logger: Logger
 
     @TaskAction
