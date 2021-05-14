@@ -4,6 +4,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+        // Should be fixed in Kotlin 1.5.10 - see: See https://youtrack.jetbrains.com/issue/KT-41142
+        //noinspection DifferentKotlinGradleVersion
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
     }
