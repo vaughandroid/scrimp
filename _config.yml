@@ -16,7 +16,7 @@ plugins:
 # Just the Docs theme settings
 search_enabled: false # Need to set up GitHub Actions to get this to work.
 aux_links:
-  "View it on GitHub":
+  "View Scrimp on GitHub":
     - "https://github.com/vaughandroid/scrimp"
 
 exclude:
