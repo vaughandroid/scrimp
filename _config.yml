@@ -23,9 +23,16 @@ github_username:  jekyll
 
 # Build settings
 markdown: kramdown
-theme: jekyll-theme-midnight
+remote_theme: pmarsceill/just-the-docs
 plugins:
   - jekyll-feed
+
+# Theme settings
+search_enabled: false # Need to set up GitHub Actions to get this to work.
+
+aux_links:
+  "View it on GitHub":
+    - "https://github.com/vaughandroid/scrimp"
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

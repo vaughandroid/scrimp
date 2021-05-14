@@ -1,9 +1,11 @@
 ---
-# Feel free to add content and custom Front Matter to this file.
-# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-
 layout: default
+title: Home
+nav_order: 1
+permalink: /
 ---
+
+# Don't do work you don't have to
 
 > **scrimp**
   *verb*
@@ -15,6 +17,9 @@ The plugin analyses which modules have been impacted by changes in source contro
 
 It is particularly suited for multi-module Android projects, which use instrumented tests.
 
+[View it on GitHub](https://github.com/vaughandroid/scrimp){: .btn .fs-5 .mb-4 .mb-md-0 }
+
+---
 
 ## Why is this needed?
 
