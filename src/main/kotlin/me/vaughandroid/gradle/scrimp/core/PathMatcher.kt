@@ -20,6 +20,6 @@ class PathMatcher(
             .filter { folderPath ->
                 path.startsWith(folderPath)
             }
-            .maxBy { it.nameCount }
+            .maxByOrNull { it.nameCount }
 
 }

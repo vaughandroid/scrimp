@@ -8,7 +8,7 @@ object ModuleGraphAsTreeSerializer {
         // Root project first.
         val rootProjectName = moduleGraph.rootProjectName
         sb.appendModule(rootProjectName, 0, moduleGraph, emptySet())
-        sb.appendln()
+        sb.appendLine()
 
         // Root modules, alphabetically.
         moduleGraph.rootModules
@@ -16,7 +16,7 @@ object ModuleGraphAsTreeSerializer {
             .sorted()
             .forEach {
                 sb.appendModule(it, 0, moduleGraph, emptySet())
-                sb.appendln()
+                sb.appendLine()
             }
 
         return sb.trimEnd().toString()
@@ -28,12 +28,12 @@ object ModuleGraphAsTreeSerializer {
         moduleGraph: ModuleGraph,
         ancestors: Set<String>
     ) {
-        appendln(moduleName)
+        appendLine(moduleName)
         moduleGraph.getOutgoingDependencies(moduleName).forEach {
             repeat(level) { append("    ") }
             append("  - ")
             if (ancestors.contains(it)) {
-                append(it).appendln(" (*)")
+                append(it).appendLine(" (*)")
             } else {
                 appendModule(it, level + 1, moduleGraph, ancestors.plus(it))
             }
