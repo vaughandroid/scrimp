@@ -15,7 +15,9 @@
 
 ## v0.1.4
 
-* Support Gradle v7.x
+* Support Gradle v7.x.
+* Update to Kotlin 1.5.0.
+* Use Maven Central instead of JCenter.
 
 ## v0.1.3
 
