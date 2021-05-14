@@ -2,10 +2,7 @@ package me.vaughandroid.gradle.scrimp.tasks
 
 import me.vaughandroid.gradle.scrimp.Logger
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*
 import java.nio.file.Path
 
 open class CreateArgumentsFileForImpactedModulesTask : DefaultTask() {
@@ -23,6 +20,7 @@ open class CreateArgumentsFileForImpactedModulesTask : DefaultTask() {
     @OutputFile
     lateinit var argumentsFilePath: Path
 
+    @Internal
     lateinit var logger: Logger
 
     @TaskAction

@@ -13,9 +13,24 @@
 * Separate task to get a list of the changed files. (Makes caching possible for AnalyseImpactedModulesTask.)
 * Add end-to-end tests.
 
+## v0.1.4
+
+* Support Gradle v7.x.
+* Update to Kotlin 1.5.0.
+* Use Maven Central instead of JCenter.
+
+## v0.1.3
+
+* Support cyclic dependencies.
+
+## v0.1.2
+
+Not released.
+
 ## v0.1.1
 
 * Fix all changes being attributed to the root module.
+* Add support for 'scrimpExtraArgs' argument and a new 'scrimpCreateArgumentsFile' task.
 
 ## v0.1.0
 
