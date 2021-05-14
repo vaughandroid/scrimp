@@ -18,9 +18,9 @@ class GitChangedFilesProvider(
         val gitProjectRoot = getGitProjectRoot()
         val outputStream = ByteArrayOutputStream()
         rootProject.exec {
-            it.workingDir = gitProjectRoot.toFile()
-            it.standardOutput = outputStream
-            it.commandLine = listOf("git", "diff", "--name-only", commitReference)
+            workingDir = gitProjectRoot.toFile()
+            standardOutput = outputStream
+            commandLine = listOf("git", "diff", "--name-only", commitReference)
         }
         val relativeFilenames = outputStream.toString().split('\n').filter { it.isNotBlank() }
 
@@ -32,9 +32,9 @@ class GitChangedFilesProvider(
     private fun getGitProjectRoot() : Path {
         val outputStream = ByteArrayOutputStream()
         rootProject.exec {
-            it.workingDir = rootProject.projectDir
-            it.standardOutput = outputStream
-            it.commandLine = listOf("git", "rev-parse", "--show-toplevel")
+            workingDir = rootProject.projectDir
+            standardOutput = outputStream
+            commandLine = listOf("git", "rev-parse", "--show-toplevel")
         }
         return Paths.get(outputStream.toString().trim())
     }
