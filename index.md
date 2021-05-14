@@ -25,7 +25,7 @@ You can use it on your local machine, or as part of your CI setup. It is particu
 
 As a quick demo, we're going to see how to run tests on some uncommitted code.
 
-If you want to see how you can run tests for code you have already committed, run other tasks, or how you can use Scrimp in a CI environment, head to [the usage page]({% link usage.md %}).
+If you want to see how you can run tests for code you have already committed, run other tasks, or how you can use Scrimp in a CI environment, head to [the usage page]({{ site.baseurl }}/usage.html).
 
 ### 1. Apply the plugin
 
