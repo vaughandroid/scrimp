@@ -51,7 +51,7 @@ If given a set of tasks to be run for each module, Scrimp can run the tasks on a
 
 ### Example
 
-![Diagram showing an example project and which modules need to be re-tested when changes are made](doc/project_dependencies.png)
+![Diagram showing an example project and which modules need to be re-tested when changes are made](assets/images/project_dependencies.png)
 
 
 ## Usage
