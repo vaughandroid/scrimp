@@ -63,7 +63,7 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.github.vaughandroid:scrimp:0.1.1'
+        classpath 'com.github.vaughandroid:scrimp:0.1.4'
     }
 }
 

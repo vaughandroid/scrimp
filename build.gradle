@@ -21,7 +21,7 @@ apply plugin: 'java-gradle-plugin'
 apply plugin: 'maven-publish'
 
 group = 'com.github.vaughandroid'
-version = '0.1.4-SNAPSHOT'
+version = '0.1.4'
 
 gradlePlugin {
     plugins {
