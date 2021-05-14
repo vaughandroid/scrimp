@@ -16,8 +16,8 @@
 title: Scrimp
 description: >- # this means to ignore newlines until "baseurl:"
   A Gradle plugin designed to only run tests when your code actually changes.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/scrimp"
+url: "https://vaughandroid.me"
 twitter_username: jekyllrb
 github_username:  jekyll
 
