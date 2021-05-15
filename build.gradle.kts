@@ -41,3 +41,13 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.9.0")
     testImplementation("com.google.truth:truth:1.0")
 }
+
+tasks {
+    test {
+        testLogging {
+            // Can use this to log stdout (including println()) from tests.
+            // TODO: Set up a build flag for this.
+//            showStandardStreams = true
+        }
+    }
+}
