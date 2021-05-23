@@ -19,22 +19,14 @@ private val sourceProject = File(javaClass.getResource("/$projectResourceFolderN
         sourceProject.copyRecursively(root)
     }
 
-    fun runGradle(vararg args: String): BuildResult {
-        return GradleRunner.create()
+    fun runGradle(vararg args: String) {
+        val buildResult = GradleRunner.create()
             .withProjectDir(root)
             .withPluginClasspath()
             .forwardOutput()
             .withDebug(true)
             .withArguments(args.toMutableList().plus("--stacktrace"))
             .build()
-    }
-
-    fun assertAllTasksSuccessful(buildResult: BuildResult) {
-        buildResult.tasks.forEach {
-            assertWithMessage("Task was not successful: ${it.path}")
-                .that(it.outcome)
-                .isEqualTo(TaskOutcome.SUCCESS)
-        }
     }
 
 }

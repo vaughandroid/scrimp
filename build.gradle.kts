@@ -38,7 +38,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
 
     testImplementation("junit:junit:4.12")
-    testImplementation("org.assertj:assertj-core:3.9.0")
     testImplementation("com.google.truth:truth:1.0")
 }
 
@@ -47,7 +46,7 @@ tasks {
         testLogging {
             // Can use this to log stdout (including println()) from tests.
             // TODO: Set up a build flag for this.
-//            showStandardStreams = true
+            showStandardStreams = true
         }
     }
 }
