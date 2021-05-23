@@ -3,7 +3,16 @@ package functional
 import org.junit.Rule
 import org.junit.Test
 
-class KotlinProjectTests {
+class KotlinLibraryProjectTests {
+
+    /**
+     * The Kotlin library project has this structure:
+     *
+     * - root
+     *   - subprojectA
+     *     - subprojectB
+     *       - subprojectC
+     */
 
     @get:Rule
     val functionalTestHelper = FunctionalTestHelper("kotlinLibraryProject")
@@ -21,5 +30,7 @@ class KotlinProjectTests {
             runGradle("test")
         }
     }
+
+
 
 }
